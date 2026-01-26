@@ -20,6 +20,7 @@ import {
   Chrome,
 } from "lucide-react"
 import Link from "next/link"
+import { SITE_CONFIG } from "@/utils/settings"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -96,7 +97,7 @@ export default function LoginPage() {
               <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
                 <Ticket className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">CouponMN</span>
+              <span className="text-xl font-bold">{SITE_CONFIG.title}</span>
             </Link>
           </div>
 
@@ -138,7 +139,7 @@ export default function LoginPage() {
             <div className="w-10 h-10 rounded-xl bg-sparkli-green flex items-center justify-center">
               <Ticket className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-foreground">CouponMN</span>
+            <span className="text-xl font-bold text-foreground">{SITE_CONFIG.title}</span>
           </Link>
         </div>
 

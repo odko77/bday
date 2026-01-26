@@ -1,3 +1,4 @@
+import { SITE_CONFIG } from "@/utils/settings"
 import { Ticket } from "lucide-react"
 import Link from "next/link"
 
@@ -10,7 +11,7 @@ export function Footer() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sparkli-green">
               <Ticket className="h-6 w-6 text-white" />
             </div>
-            <span className="text-2xl font-extrabold">CouponMN</span>
+            <span className="text-2xl font-extrabold">{SITE_CONFIG.title}</span>
           </Link>
 
           <div className="flex flex-wrap justify-center gap-6">
@@ -29,7 +30,7 @@ export function Footer() {
           </div>
 
           <p className="text-sm text-white/60">
-            2026 CouponMN. Бүх эрх хуулиар хамгаалагдсан.
+            2026 {SITE_CONFIG.title}. Бүх эрх хуулиар хамгаалагдсан.
           </p>
         </div>
       </div>

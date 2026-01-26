@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Ticket, Menu, X } from "lucide-react"
 import Link from "next/link"
 
+import { SITE_CONFIG } from '@/utils/settings'
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -17,7 +19,7 @@ export function Navbar() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sparkli-green">
               <Ticket className="h-6 w-6 text-white" />
             </div>
-            <span className="text-2xl font-extrabold text-foreground">CouponMN</span>
+            <span className="text-2xl font-extrabold text-foreground">{SITE_CONFIG.title}</span>
           </Link>
 
           {/* Desktop Nav */}
