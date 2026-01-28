@@ -8,7 +8,7 @@ const instance = axios.create(
         baseURL: baseUrl,
         withCredentials: true, // Хүсэлт болгонд ээр cookie явуулах нь
         headers: {
-            "Authorization": `Bearar ${process.env.NEXT_PUBLIC_FULL_TOKEN}`,
+            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_FULL_TOKEN}`,
             'Content-Type': 'application/json',
         },
     }
