@@ -62,14 +62,15 @@ export function HeroSection({ categories, homePage }: { categories: CategoryInte
           {/* Category Pills */}
           <div className="mb-8 flex flex-wrap justify-center gap-3">
             {categories.map((category) => (
-              <div
+              <Link
+                href={`/coupons/?category=${category.documentId}`}
                 key={category.name}
                 className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-foreground shadow-md transition-transform hover:scale-105 cursor-pointer`}
                 style={{ backgroundColor: category.color }}
               >
                 <DynamicIcon name={category.logo_name as IconName} className={`h-4 w-4`} />
                 {category.name}
-              </div>
+              </Link>
             ))}
           </div>
 
