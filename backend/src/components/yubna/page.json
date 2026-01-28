@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_yubna_pages",
+  "info": {
+    "displayName": "Page",
+    "icon": "bell"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
