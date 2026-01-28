@@ -22,5 +22,11 @@ const withoutToast = (config?: AxiosRequestConfig): any => {
 };
 
 export const CategoryApi = {
-    list: () => instance.get(`/api/categories/`),
+    list: () => instance.get(`/api/categories/?sort=order`),
+    post: (data: any, locale="mn") => instance.post(`/api/categories/?locale=${locale}`, data),
 }
+
+export const SingleType = {
+    homepage: () => instance.get(`/api/home-page/`),
+}
+
