@@ -74,11 +74,9 @@ export function Navbar() {
               <Link href="/pricing" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Үнийн мэдээлэл
               </Link>
-              <Link href="/login">
-                <Button variant="outline" className="w-full rounded-full border-2 border-sparkli-green font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
-                  Нэвтрэх
-                </Button>
-              </Link>
+              <Button type="button" onClick={handeLogin} variant="outline" className="w-full rounded-full border-2 border-sparkli-green font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
+                Нэвтрэх
+              </Button>
               <Link href="/register">
                 <Button className="w-full rounded-full bg-sparkli-green font-bold text-white hover:bg-sparkli-green/90">
                   Бүртгүүлэх

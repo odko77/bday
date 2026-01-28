@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Nunito, Nunito_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import GlobalDialog from "@/components/global/modal"
 
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 const nunitoSans = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito-sans" });
@@ -38,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${nunito.variable} ${nunitoSans.variable} font-sans antialiased`}>
+        <GlobalDialog />
         {children}
         <Analytics />
       </body>
