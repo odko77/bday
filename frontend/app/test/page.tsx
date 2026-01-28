@@ -111,7 +111,11 @@ const Test = (props) => {
         async () =>
         {
             const rsp = await CategoryApi.list()
-            console.log(rsp);
+
+            for (const item of categories) {
+                const rsp = await CategoryApi.post(item)
+                console.log(rsp);
+            }
         },
         []
     )

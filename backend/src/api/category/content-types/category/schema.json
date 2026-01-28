@@ -24,6 +24,14 @@
       },
       "required": true
     },
+    "logo_name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "logo_url": {
       "type": "media",
       "pluginOptions": {
@@ -32,7 +40,7 @@
         }
       },
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",

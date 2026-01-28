@@ -3,16 +3,10 @@
 import { Button } from "@/components/ui/button"
 import { CouponCard } from "@/components/coupon-card"
 import { Ticket, Percent, ShoppingBag, Gift, Star, Clock } from "lucide-react"
+import { DynamicIcon, IconName } from "lucide-react/dynamic"
 import Link from "next/link"
-
-const categories = [
-  { name: "Хоол & Ресторан", icon: ShoppingBag, color: "bg-sparkli-green" },
-  { name: "Дэлгүүр", icon: Gift, color: "bg-sparkli-blue" },
-  { name: "Аялал", icon: Star, color: "bg-sparkli-yellow" },
-  { name: "Энтертайнмент", icon: Ticket, color: "bg-sparkli-orange" },
-  { name: "Үйлчилгээ", icon: Percent, color: "bg-sparkli-pink" },
-  { name: "Өдрийн санал", icon: Clock, color: "bg-sparkli-green" },
-]
+import { CategoryInterface } from "@/types/categories"
+import { HomePageInterface } from "@/types/singleType"
 
 const featuredCoupons = [
   {
@@ -52,7 +46,7 @@ const featuredCoupons = [
   },
 ]
 
-export function HeroSection() {
+export function HeroSection({ categories, homePage }: { categories: CategoryInterface[], homePage: HomePageInterface }) {
   return (
     <section className="relative min-h-screen overflow-hidden bg-sparkli-cream">
       {/* Decorative Background Elements */}
@@ -70,9 +64,10 @@ export function HeroSection() {
             {categories.map((category) => (
               <div
                 key={category.name}
-                className={`flex items-center gap-2 rounded-full ${category.color} px-4 py-2 text-sm font-semibold text-foreground shadow-md transition-transform hover:scale-105 cursor-pointer`}
+                className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-foreground shadow-md transition-transform hover:scale-105 cursor-pointer`}
+                style={{ backgroundColor: category.color }}
               >
-                <category.icon className="h-4 w-4" />
+                <DynamicIcon name={category.logo_name as IconName} className={`h-4 w-4`} />
                 {category.name}
               </div>
             ))}
@@ -80,9 +75,9 @@ export function HeroSection() {
 
           {/* Main Heading */}
           <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            <span className="text-balance">Монголын шилдэг </span>
+            <span className="text-balance">{homePage.title}</span>
             <span className="relative inline-block">
-              <span className="relative z-10 text-sparkli-green">хямдралын купонууд</span>
+              <span className="relative z-10 text-sparkli-green">{homePage.title2}</span>
               <svg
                 className="absolute -bottom-2 left-0 w-full"
                 viewBox="0 0 300 12"
@@ -101,7 +96,7 @@ export function HeroSection() {
 
           {/* Subtitle */}
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            200+ компанийн хямдралын купонуудыг нэг дороос олоорой. Сар бүр 50%-100% хүртэл хэмнээрэй.
+            {homePage.description}
           </p>
 
           {/* CTA Buttons */}
