@@ -8,7 +8,7 @@ const instance = axios.create(
         baseURL: baseUrl,
         withCredentials: true, // Хүсэлт болгонд ээр cookie явуулах нь
         headers: {
-            "Authorization": `Bearar ${process.env.NEXT_PUBLIC_FULL_TOKEN}`,
+            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_FULL_TOKEN}`,
             'Content-Type': 'application/json',
         },
     }
@@ -23,6 +23,27 @@ interface ApiResponse {
         code: number;
     };
 }
+
+
+const requestBefore = async (req: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
+    if (!req.headers) {
+        return req
+    }
+
+    if (typeof window === "undefined") {
+        return req
+    }
+    else {
+        // client-side cookie/localStorage-оос JWT уншиж header-тэй явуулах
+        const authToken = getCookie("jwt") || getLocalStorage("jwt");
+        if (authToken) {
+            req.headers['Authorization'] = `Bearer ${authToken}`;
+        }
+    }
+    return req;
+}
+
+instance.interceptors.request.use(requestBefore);
 
 /**
  * Axios ийн response датанаас

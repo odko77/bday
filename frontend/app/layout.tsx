@@ -4,6 +4,9 @@ import { Nunito, Nunito_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import GlobalDialog from "@/components/global/modal"
+import { MeApi } from "@/utils/api"
+import AuthContextProvider from "@/context/AuthContext"
+import { getUserMeLoader } from "@/lib/ssr/get-user"
 
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 const nunitoSans = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito-sans" });
@@ -31,16 +34,21 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
+  const user = await getUserMeLoader()
+
   return (
     <html lang="en">
       <body className={`${nunito.variable} ${nunitoSans.variable} font-sans antialiased`}>
         <GlobalDialog />
-        {children}
+        <AuthContextProvider user={user?.data ?? {}}>
+          {children}
+        </AuthContextProvider>
         <Analytics />
       </body>
     </html>

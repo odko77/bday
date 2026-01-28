@@ -524,6 +524,12 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Blocks &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -631,7 +637,6 @@ export interface ApiCouponCoupon extends Struct.CollectionTypeSchema {
   };
   attributes: {
     bg_url: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -691,6 +696,36 @@ export interface ApiCouponCoupon extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFeaturedFeatured extends Struct.SingleTypeSchema {
+  collectionName: 'featureds';
+  info: {
+    displayName: 'featured';
+    pluralName: 'featureds';
+    singularName: 'featured';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    coupon1: Schema.Attribute.Relation<'oneToOne', 'api::coupon.coupon'>;
+    coupon2: Schema.Attribute.Relation<'oneToOne', 'api::coupon.coupon'>;
+    coupon3: Schema.Attribute.Relation<'oneToOne', 'api::coupon.coupon'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::featured.featured'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1241,6 +1276,7 @@ declare module '@strapi/strapi' {
       'api::company.company': ApiCompanyCompany;
       'api::coupon-item.coupon-item': ApiCouponItemCouponItem;
       'api::coupon.coupon': ApiCouponCoupon;
+      'api::featured.featured': ApiFeaturedFeatured;
       'api::home-page.home-page': ApiHomePageHomePage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

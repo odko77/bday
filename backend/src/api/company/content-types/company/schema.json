@@ -40,6 +40,14 @@
         "audios"
       ]
     },
+    "description": {
+      "type": "blocks",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "color": {
       "type": "string",
       "pluginOptions": {

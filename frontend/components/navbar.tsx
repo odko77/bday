@@ -6,9 +6,12 @@ import { Ticket, Menu, X } from "lucide-react"
 import Link from "next/link"
 
 import { SITE_CONFIG } from '@/utils/settings'
+import { useAuthContext } from "@/context/AuthContext"
+import { AuthLogoutButton } from "./logout"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { hasUser, user } = useAuthContext()
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-sparkli-cream/80 backdrop-blur-md">
@@ -36,16 +39,22 @@ export function Navbar() {
             <Link href="/pricing" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
               Үнийн мэдээлэл
             </Link>
-            <Link href="/login">
-              <Button variant="outline" className="rounded-full border-2 border-sparkli-green px-6 font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
-                Нэвтрэх
-              </Button>
-            </Link>
-            <Link href="/register">
-              <Button className="rounded-full bg-sparkli-green px-6 font-bold text-white hover:bg-sparkli-green/90">
-                Бүртгүүлэх
-              </Button>
-            </Link>
+            {
+              hasUser
+              ? (
+                <div>
+                  {user.email}
+                  <AuthLogoutButton />
+                </div>
+              ):
+              (
+                <Link href="/login">
+                  <Button variant="outline" className="rounded-full border-2 border-sparkli-green px-6 font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
+                    Нэвтрэх
+                  </Button>
+                </Link>
+              )
+            }
           </div>
 
           {/* Mobile Menu Button */}
@@ -74,9 +83,11 @@ export function Navbar() {
               <Link href="/pricing" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Үнийн мэдээлэл
               </Link>
-              <Button type="button" onClick={handeLogin} variant="outline" className="w-full rounded-full border-2 border-sparkli-green font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
-                Нэвтрэх
-              </Button>
+              <Link href="/register">
+                <Button type="button" variant="outline" className="w-full rounded-full border-2 border-sparkli-green font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
+                  Нэвтрэх
+                </Button>
+              </Link>
               <Link href="/register">
                 <Button className="w-full rounded-full bg-sparkli-green font-bold text-white hover:bg-sparkli-green/90">
                   Бүртгүүлэх

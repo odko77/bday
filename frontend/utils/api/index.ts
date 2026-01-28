@@ -30,3 +30,7 @@ export const SingleType = {
     homepage: () => instance.get(`/api/home-page/`),
 }
 
+export const MeApi = {
+    me: () => instance.get(`/api/users/me`)
+}
+

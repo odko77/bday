@@ -1,8 +1,9 @@
 "use client"
 
-import React from "react"
+import React, { useCallback } from "react"
 
 import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,18 +21,45 @@ import {
   Chrome,
 } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { SITE_CONFIG } from "@/utils/settings"
+
+type LoginFormValues = {
+  email: string
+  password: string
+  remember: boolean
+}
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate login
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
+  const handleGoogle = useCallback(
+    () =>
+    {
+      const url = process.env.NEXT_PUBLIC_BACK_URL + "/api/connect/google"
+      router.push(url)
+    },
+    []
+  )
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+      remember: false,
+    },
+  })
+
+  const onSubmit = async (data: LoginFormValues) => {
+    console.log("login form", data);
+    // Амжилттай бол home руу эсвэл хүссэн dashboard руу redirect хийх
+    // router.push("/")
   }
 
   return (
@@ -158,6 +186,8 @@ export default function LoginPage() {
           {/* Social Login */}
           <div className="space-y-3 mb-6">
             <Button
+              type="button"
+              onClick={handleGoogle}
               variant="outline"
               className="w-full h-12 rounded-xl border-2 font-semibold bg-white hover:bg-gray-50 transition-all"
             >
@@ -177,7 +207,7 @@ export default function LoginPage() {
           </div>
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-semibold text-foreground">
                 Имэйл хаяг
@@ -189,9 +219,20 @@ export default function LoginPage() {
                   type="email"
                   placeholder="name@example.com"
                   className="h-12 pl-12 rounded-xl border-2 border-border bg-white focus:border-sparkli-green focus:ring-sparkli-green/20"
-                  required
+                  aria-invalid={!!errors.email}
+                  autoComplete="email"
+                  {...register("email", {
+                    required: "Имэйлээ оруулна уу",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Имэйл формат буруу байна",
+                    },
+                  })}
                 />
               </div>
+              {errors.email?.message ? (
+                <p className="text-sm text-destructive">{errors.email.message}</p>
+              ) : null}
             </div>
 
             <div className="space-y-2">
@@ -210,7 +251,15 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Нууц үгээ оруулна уу"
                   className="h-12 pl-12 pr-12 rounded-xl border-2 border-border bg-white focus:border-sparkli-green focus:ring-sparkli-green/20"
-                  required
+                  aria-invalid={!!errors.password}
+                  autoComplete="current-password"
+                  {...register("password", {
+                    required: "Нууц үгээ оруулна уу",
+                    minLength: {
+                      value: 6,
+                      message: "Нууц үг хамгийн багадаа 6 тэмдэгт байна",
+                    },
+                  })}
                 />
                 <button
                   type="button"
@@ -220,10 +269,24 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
+              {errors.password?.message ? (
+                <p className="text-sm text-destructive">{errors.password.message}</p>
+              ) : null}
             </div>
 
             <div className="flex items-center gap-2">
-              <Checkbox id="remember" className="rounded-md" />
+              <Controller
+                name="remember"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    id="remember"
+                    className="rounded-md"
+                    checked={field.value}
+                    onCheckedChange={(val) => field.onChange(val === true)}
+                  />
+                )}
+              />
               <Label htmlFor="remember" className="text-sm text-muted-foreground cursor-pointer">
                 Намайг сана
               </Label>
@@ -231,10 +294,10 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
               className="w-full h-12 rounded-xl bg-sparkli-green hover:bg-sparkli-green/90 text-white font-bold text-base shadow-lg shadow-sparkli-green/25 transition-all"
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Нэвтэрч байна...

@@ -5,7 +5,7 @@ import { BrandsSection } from "@/components/brands-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
-import { CategoryApi, SingleType } from "@/utils/api"
+import { CategoryApi, MeApi, SingleType } from "@/utils/api"
 
 export default async function Home() {
 
