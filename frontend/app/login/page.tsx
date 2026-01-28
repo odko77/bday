@@ -23,9 +23,10 @@ import {
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { SITE_CONFIG } from "@/utils/settings"
+import { MeApi } from "@/utils/api"
 
 type LoginFormValues = {
-  email: string
+  identifier: string
   password: string
   remember: boolean
 }
@@ -50,7 +51,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
       remember: false,
     },
@@ -58,7 +59,8 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     console.log("login form", data);
-    // Амжилттай бол home руу эсвэл хүссэн dashboard руу redirect хийх
+    MeApi.login(data).then(er => console.log(er))
+      // Амжилттай бол home руу эсвэл хүссэн dashboard руу redirect хийх
     // router.push("/")
   }
 
@@ -209,19 +211,19 @@ export default function LoginPage() {
           {/* Login Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-semibold text-foreground">
+              <Label htmlFor="identifier" className="text-sm font-semibold text-foreground">
                 Имэйл хаяг
               </Label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <Input
-                  id="email"
+                  id="identifier"
                   type="email"
                   placeholder="name@example.com"
                   className="h-12 pl-12 rounded-xl border-2 border-border bg-white focus:border-sparkli-green focus:ring-sparkli-green/20"
-                  aria-invalid={!!errors.email}
-                  autoComplete="email"
-                  {...register("email", {
+                  aria-invalid={!!errors.identifier}
+                  autoComplete="identifier"
+                  {...register("identifier", {
                     required: "Имэйлээ оруулна уу",
                     pattern: {
                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -230,8 +232,8 @@ export default function LoginPage() {
                   })}
                 />
               </div>
-              {errors.email?.message ? (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+              {errors.identifier?.message ? (
+                <p className="text-sm text-destructive">{errors.identifier.message}</p>
               ) : null}
             </div>
 

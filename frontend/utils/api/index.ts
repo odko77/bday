@@ -31,6 +31,7 @@ export const SingleType = {
 }
 
 export const MeApi = {
-    me: () => instance.get(`/api/users/me`)
+    me: () => instance.get(`/api/users/me`),
+    login: (data: any) => instance.post(`/api/auth/local`, data)
 }
 
