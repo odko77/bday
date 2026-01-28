@@ -9,7 +9,6 @@ const instance = axios.create(
         withCredentials: true, // Хүсэлт болгонд ээр cookie явуулах нь
         headers: {
             "Authorization": `Bearar ${process.env.NEXT_PUBLIC_FULL_TOKEN}`,
-            'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json',
         },
     }
@@ -24,27 +23,6 @@ interface ApiResponse {
         code: number;
     };
 }
-
-const requestBefore = (req: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    if (typeof window !== "undefined") {
-        if (req.headers) {
-            req.headers['X-Csrftoken'] = getCookie("csrftoken")
-            // Add authorization token if available
-            const authToken = getCookie("__sid");
-            if (authToken) {
-                req.headers['Authorization'] = `Bearer ${authToken}`;
-            }
-            // Add session ID for order service requests
-            const sessionId = getLocalStorage(SESSION_ID_KEY);
-            if (sessionId) {
-                req.headers['cart-session-id'] = sessionId;
-            }
-        }
-    }
-    return req;
-}
-
-instance.interceptors.request.use(requestBefore);
 
 /**
  * Axios ийн response датанаас
