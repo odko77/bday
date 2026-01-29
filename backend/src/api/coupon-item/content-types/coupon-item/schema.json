@@ -7,47 +7,23 @@
     "displayName": "CouponItem"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "code": {
       "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
       "required": true,
       "unique": true
     },
     "sequence": {
-      "type": "integer",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "type": "integer"
     },
     "owner": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "type": "string"
     },
     "used_date": {
-      "type": "datetime",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
+      "type": "datetime"
     },
     "coupon": {
       "type": "relation",
