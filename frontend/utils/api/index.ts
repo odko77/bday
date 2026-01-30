@@ -36,6 +36,10 @@ export const SingleType = {
     featured: () => instance.get(`/api/featured/?populate[coupon1][populate][company][populate]=logo_url&populate[coupon2][populate][company][populate]=logo_url&populate[coupon3][populate][company][populate]=logo_url`),
 }
 
+export const CompanyApi = {
+    slide: () => instance.get(`/api/companies?populate=logo_url`)
+}
+
 export const MeApi = {
     me: () => instance.get(`/api/users/me`),
     login: (data: any) => instance.post(`/api/auth/local`, data)

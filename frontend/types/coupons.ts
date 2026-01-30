@@ -9,7 +9,7 @@ export interface CompanyInterface {
     publishedAt: string;
     logo_url: any;
     locale: string;
-    description: string | null;
+    description: any;
 }
 
 export interface CouponInteface {

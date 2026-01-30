@@ -83,6 +83,8 @@
 }
 
 @theme inline {
+  --animate-scroll-infinite: scroll-infinite 40s linear infinite;
+  --animate-scroll-infinite-reverse: scroll-infinite-reverse 40s linear infinite;
   --font-sans: var(--font-nunito), 'Nunito', sans-serif;
   --font-mono: var(--font-nunito-sans), 'Nunito Sans', sans-serif;
   --color-sparkli-green: var(--sparkli-green);
@@ -163,4 +165,31 @@
 
 .animate-scroll-reverse {
   animation: scroll-reverse 30s linear infinite;
+}
+@keyframes scroll-infinite {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - 1.5rem));
+  }
+}
+
+@keyframes scroll-infinite-reverse {
+  0% {
+    transform: translateX(calc(-100% - 1.5rem));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@layer utilities {
+  .animate-scroll-infinite {
+    animation: scroll-infinite 60s linear infinite;
+  }
+  
+  .animate-scroll-infinite-reverse {
+    animation: scroll-infinite-reverse 60s linear infinite;
+  }
 }

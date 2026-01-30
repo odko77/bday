@@ -1,64 +1,70 @@
 "use client"
 
-import React from "react"
+import Marquee from "react-fast-marquee"
+import { useState } from "react"
+import { CompanyInterface } from "@/types/coupons"
+import { useMemo } from "react"
+function MarqueeCard({ item, expandDirection = "up" }: { item: CompanyInterface, expandDirection?: "up" | "down" }) {
+  const [isHovered, setIsHovered] = useState(false)
 
-import { Building2, Utensils, ShoppingBag, Plane, Sparkles, Coffee, Car, Smartphone } from "lucide-react"
+  const logo = useMemo(() => {
+    if (!item?.logo_url?.url) {
+      return null
+    }
+    return process.env.NEXT_PUBLIC_BACK_URL + item.logo_url.url
+  }, [item?.logo_url])
 
-const brands = [
-  {
-    title: "KFC Mongolia",
-    description: "Бүх combo-д 30-50% хямдрал",
-    icon: Utensils,
-    color: "bg-sparkli-orange",
-  },
-  {
-    title: "Nomin Supermarket",
-    description: "Хүнсний бүтээгдэхүүнд хямдрал",
-    icon: ShoppingBag,
-    color: "bg-sparkli-green",
-  },
-  {
-    title: "Blue Sky Hotel",
-    description: "Өрөө, ресторанд хямдрал",
-    icon: Building2,
-    color: "bg-sparkli-blue",
-  },
-  {
-    title: "MIAT Airlines",
-    description: "Онгоцны тийзэнд хямдрал",
-    icon: Plane,
-    color: "bg-sparkli-pink",
-  },
-  {
-    title: "Shangri-La Mall",
-    description: "Дэлгүүрүүдэд хямдрал",
-    icon: Sparkles,
-    color: "bg-sparkli-yellow",
-  },
-  {
-    title: "Coffee Bean",
-    description: "Кофе, зууш хямдрал",
-    icon: Coffee,
-    color: "bg-sparkli-orange",
-  },
-  {
-    title: "Toyota Mongolia",
-    description: "Автомашины үйлчилгээнд",
-    icon: Car,
-    color: "bg-sparkli-green",
-  },
-  {
-    title: "Unitel",
-    description: "Багц, интернет хямдрал",
-    icon: Smartphone,
-    color: "bg-sparkli-blue",
-  },
-]
-
-export function BrandsSection() {
   return (
-    <section id="brands" className="overflow-hidden bg-sparkli-cream py-24">
-      <div className="container mx-auto px-4">
+    <div
+      className={`relative mx-3 h-[200px] flex my-3 transition-all duration-300 ${
+        expandDirection === "up" ? "items-end" : "items-start"
+      } ${isHovered ? 'z-50' : 'z-0'}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div
+        className={`
+          relative w-64 rounded-2xl bg-gradient-to-br p-5 bg-white
+          shadow-lg transition-all duration-300 ease-out cursor-pointer
+          ${isHovered ? "shadow-2xl" : "shadow-lg"}
+        `}
+      >
+        {/* Title and subtitle always visible */}
+        <div className="flex items-center gap-3">
+          {logo ? (
+              <img src={logo || "/placeholder.svg"} alt={item?.name} className="w-10 h-10 object-contain" />
+            ) : (
+              item?.name?.charAt(0)
+            )}
+          <div>
+            <h3 className="text-black font-bold text-lg leading-tight">{item.name}</h3>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div
+          className="overflow-hidden transition-all duration-300 ease-out"
+          style={{
+            maxHeight: isHovered ? "120px" : "0px",
+            opacity: isHovered ? 1 : 0,
+            marginTop: isHovered ? "12px" : "0px",
+          }}
+        >
+          <div className="pt-3 border-t border-white/20">
+            <p className="text-black text-sm leading-relaxed">
+              {item.description[0].children[0].text}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function BrandsSection({ companies }: { companies: CompanyInterface[] }) {
+  return (
+    <section id="brands" className="bg-sparkli-cream py-24 pb-0">
+      <div className="mx-auto">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-extrabold text-foreground md:text-5xl">
             <span className="text-balance">200+ брэндийн</span>
@@ -70,41 +76,35 @@ export function BrandsSection() {
           </p>
         </div>
 
-        {/* Scrolling Brands - Row 1 */}
-        <div className="mb-6 flex animate-scroll gap-6">
-          {[...brands, ...brands].map((brand, index) => (
-            <BrandCard key={`${brand.title}-${index}`} {...brand} />
-          ))}
-        </div>
+        <div className="w-full">
+          {/* First Row - Expands UP */}
+          <div className="-mt-24">
+            <Marquee
+              speed={40}
+              pauseOnHover={true}
+              autoFill
+            >
+              {companies.map((item) => (
+                <MarqueeCard key={item.id} item={item} expandDirection="up" />
+              ))}
+            </Marquee>
+          </div>
 
-        {/* Scrolling Brands - Row 2 (Reverse) */}
-        <div className="flex animate-scroll-reverse gap-6">
-          {[...brands.reverse(), ...brands].map((brand, index) => (
-            <BrandCard key={`${brand.title}-reverse-${index}`} {...brand} />
-          ))}
+          {/* Second Row - Expands DOWN */}
+          <div className="">
+            <Marquee
+              speed={30}
+              pauseOnHover={true}
+              direction="right"
+              autoFill
+            >
+              {[...companies].reverse().map((item) => (
+                <MarqueeCard key={`reverse-${item.id}`} item={item} expandDirection="down" />
+              ))}
+            </Marquee>
+          </div>
         </div>
       </div>
     </section>
-  )
-}
-
-interface BrandCardProps {
-  title: string
-  description: string
-  icon: React.ComponentType<{ className?: string }>
-  color: string
-}
-
-function BrandCard({ title, description, icon: Icon, color }: BrandCardProps) {
-  return (
-    <div className="flex min-w-[280px] items-center gap-4 rounded-2xl bg-white p-5 shadow-md cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1">
-      <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${color} text-white`}>
-        <Icon className="h-6 w-6" />
-      </div>
-      <div>
-        <h3 className="font-bold text-foreground">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-    </div>
   )
 }

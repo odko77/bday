@@ -5,7 +5,7 @@ import { BrandsSection } from "@/components/brands-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
-import { CategoryApi, CouponsApi, MeApi, SingleType } from "@/utils/api"
+import { CategoryApi, CompanyApi, CouponsApi, MeApi, SingleType } from "@/utils/api"
 
 export default async function Home() {
 
@@ -22,12 +22,15 @@ export default async function Home() {
   const rspFeatured = await SingleType.featured()
   const featured = rspFeatured?.data?.data ?? {}
 
+  const companiesRsp = await CompanyApi.slide()
+  const companies = companiesRsp?.data?.data ?? []
+
   return (
     <main className="min-h-screen">
       <Navbar />
       <HeroSection categories={categories} homePage={homePage} featured={featured} />
       <FeaturesSection />
-      <BrandsSection />
+      <BrandsSection companies={companies} />
       <TestimonialsSection />
       <CTASection />
       <Footer />
