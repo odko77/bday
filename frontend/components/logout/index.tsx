@@ -1,15 +1,13 @@
 import { logoutAction } from "@/lib/ssr/logout";
+import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 
 export function AuthLogoutButton() {
     return (
       <form action={logoutAction}>
-        <button
-          type="submit"
-          className="flex items-center gap-2"
-        >
-          <LogOut className="w-6 h-6" />
-        </button>
+        <Button type="submit" className="w-full rounded-2xl bg-sparkli-pink hover:bg-sparkli-pink/90 text-white font-semibold">
+          <LogOut /> Гарах
+        </Button>
       </form>
     );
 }

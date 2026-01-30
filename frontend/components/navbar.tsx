@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Ticket, Menu, X } from "lucide-react"
+import { Ticket, Menu, X, User, LogOut } from "lucide-react"
 import Link from "next/link"
 
 import { SITE_CONFIG } from '@/utils/settings'
@@ -30,24 +30,27 @@ export function Navbar() {
             <Link href="/coupons" className="font-semibold text-sparkli-green transition-colors hover:text-sparkli-green/80">
               Купонууд
             </Link>
-            <a href="#features" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link href="/#features" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
               Онцлогууд
-            </a>
-            <a href="#brands" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+            </Link>
+            <Link href="/#brands" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
               Брэндүүд
-            </a>
+            </Link>
             <Link href="/pricing" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
               Үнийн мэдээлэл
             </Link>
             {
-              hasUser
-              ? (
-                <div>
-                  {user.email}
-                  <AuthLogoutButton />
+              hasUser ? (
+                <div className="relative">
+                  <Link
+                    href={"/profile"}
+                    className="flex items-center gap-2 rounded-full border-2 border-sparkli-green bg-white px-4 py-2 font-medium text-sparkli-green transition-all hover:bg-sparkli-green hover:text-white"
+                  >
+                    <User className="h-4 w-4" />
+                    <span className="max-w-[150px] truncate">{user.email}</span>
+                  </Link>
                 </div>
-              ):
-              (
+              ) : (
                 <Link href="/login">
                   <Button variant="outline" className="rounded-full border-2 border-sparkli-green px-6 font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
                     Нэвтрэх
@@ -74,25 +77,38 @@ export function Navbar() {
               <Link href="/coupons" className="font-semibold text-sparkli-green transition-colors hover:text-sparkli-green/80">
                 Купонууд
               </Link>
-              <a href="#features" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+              <Link href="/#features" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Онцлогууд
-              </a>
-              <a href="#brands" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+              </Link>
+              <Link href="/#brands" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Брэндүүд
-              </a>
+              </Link>
               <Link href="/pricing" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Үнийн мэдээлэл
               </Link>
-              <Link href="/register">
-                <Button type="button" variant="outline" className="w-full rounded-full border-2 border-sparkli-green font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
-                  Нэвтрэх
-                </Button>
-              </Link>
-              <Link href="/register">
-                <Button className="w-full rounded-full bg-sparkli-green font-bold text-white hover:bg-sparkli-green/90">
-                  Бүртгүүлэх
-                </Button>
-              </Link>
+
+              {hasUser ? (
+                <div className="space-y-3 pt-2 border-t border-sparkli-green/20">
+                  <div className="flex items-center gap-2 px-3 py-2 bg-sparkli-green/5 rounded-lg">
+                    <User className="h-4 w-4 text-sparkli-green" />
+                    <span className="text-sm font-medium text-foreground truncate">{user.email}</span>
+                  </div>
+                  <AuthLogoutButton />
+                </div>
+              ) : (
+                <>
+                  <Link href="/login">
+                    <Button type="button" variant="outline" className="w-full rounded-full border-2 border-sparkli-green font-bold text-sparkli-green hover:bg-sparkli-green hover:text-white bg-transparent">
+                      Нэвтрэх
+                    </Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button className="w-full rounded-full bg-sparkli-green font-bold text-white hover:bg-sparkli-green/90">
+                      Бүртгүүлэх
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

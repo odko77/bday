@@ -7,8 +7,11 @@ import { CouponCard } from "@/components/coupon-card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Mail, User2, Calendar, Venus, Mars, Ticket, CheckCircle2 } from "lucide-react"
-import { MeApi } from "@/utils/api"
+import { CouponsApi, MeApi } from "@/utils/api"
 import { CouponInteface } from "@/types/coupons"
+import { AuthLogoutButton } from "@/components/logout"
+import Link from "next/link"
+import { useAuthContext } from "@/context/AuthContext"
 
 interface ProfileUser {
   username?: string | null
@@ -18,23 +21,23 @@ interface ProfileUser {
 }
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<ProfileUser | null>(null)
   const [myCoupons, setMyCoupons] = useState<CouponInteface[]>([])
   const [usedCoupons, setUsedCoupons] = useState<CouponInteface[]>([])
 
-  useEffect(() => {
-    // Strapi-ийн /api/users/me ээс дэлгэрэнгүй мэдээлэл авах
-    const loadMe = async () => {
-      try {
-        const rsp = await MeApi.me()
-        setUser(rsp.data)
-      } catch {
-        // swallow
-      }
-    }
+  const { user } = useAuthContext()
 
-    loadMe()
-  }, [])
+  const getCoupons = async () =>
+  {
+    const rsp = await CouponsApi.myCoupons()
+    setMyCoupons(rsp.data?.data ?? [])
+  }
+
+  useEffect(
+    () => {
+      getCoupons()
+    },
+    []
+  )
 
   const displayUser = useMemo<ProfileUser>(() => {
     return {
@@ -141,9 +144,10 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <Button className="w-full rounded-2xl bg-sparkli-green hover:bg-sparkli-green/90 text-white font-semibold">
+              <Button className="w-full rounded-2xl bg-sparkli-green hover:bg-sparkli-green/90 text-white font-semibold mb-3">
                 Мэдээлэл шинэчлэх
               </Button>
+              <AuthLogoutButton />
             </div>
 
             {/* Coupons sections */}
@@ -161,9 +165,20 @@ export default function ProfilePage() {
                 </div>
 
                 {myCoupons.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
-                    Одоогоор авсан купон алга байна. Хямдралуудаас сонгон авах боломжтой.
-                  </p>
+                  <div className="flex flex-col">
+                    <p className="text-sm text-muted-foreground">
+                      Одоогоор авсан купон алга байна. Хямдралуудаас сонгон авах боломжтой.
+                    </p>
+                    <Link
+                      href="/coupons"
+                      className="w-fit"
+                    >
+                      <Button className="w-fit rounded-2xl bg-sparkli-green hover:bg-sparkli-green/90 text-white font-semibold mb-3">
+                        Купон авах
+                      </Button>
+                    </Link>
+
+                  </div>
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
                     {myCoupons.map((coupon) => (

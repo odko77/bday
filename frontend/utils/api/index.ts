@@ -30,6 +30,7 @@ export const CategoryApi = {
 export const CouponsApi = {
     coupons: (documentId: string) => instance.get(`/api/coupons?filters[categories][documentId][$eq]=${documentId}&populate[company][populate]=logo_url&%20sort[0]=company.order:asc`),
     couponsAll: () => instance.get(`/api/coupons?populate[company][populate]=logo_url&%20sort[0]=company.order:asc`),
+    myCoupons: () => instance.get(`/api/coupons?populate[company][populate]=logo_url&%20sort[0]=company.order:asc`),
 }
 
 export const SingleType = {
