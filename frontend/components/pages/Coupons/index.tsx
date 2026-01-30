@@ -10,14 +10,6 @@ import { Badge } from "@/components/ui/badge"
 import {
   Search,
   SlidersHorizontal,
-  Utensils,
-  ShoppingBag,
-  Plane,
-  Film,
-  Sparkles,
-  Building2,
-  Shirt,
-  Heart,
   X,
 } from "lucide-react"
 import { CategoryInterface } from "@/types/categories"
@@ -25,6 +17,8 @@ import { DynamicIcon, IconName } from "lucide-react/dynamic"
 import { CouponsApi } from "@/utils/api"
 import { CouponInteface } from "@/types/coupons"
 import { Pagination } from "@/types/global"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import { useEffect } from "react"
 
 interface CouponState {
   data: CouponInteface[];
@@ -34,7 +28,11 @@ interface CouponState {
 }
 
 export default function CouponsPage({ categories }: { categories: CategoryInterface[] }) {
-  const [selectedCategory, setSelectedCategory] = useState("all")
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const params = useSearchParams()
+  const [selectedCategory, setSelectedCategory] = useState<string>(params.get("category") ?? "all")
   const [searchQuery, setSearchQuery] = useState("")
   const [showFilters, setShowFilters] = useState(false)
 
@@ -50,24 +48,39 @@ export default function CouponsPage({ categories }: { categories: CategoryInterf
     }
   })
 
+  useEffect(
+    () => {
+      getCoupons(selectedCategory)
+    },
+    [selectedCategory]
+  )
+
   const getCoupons = useCallback(
     async (documentId: string) =>
     {
-      const data = await CouponsApi.coupons(documentId)
-      setCoupons(data?.data ?? {})
+      let data;
+
+      if (documentId === "all") {
+        data = await CouponsApi.couponsAll();
+      } else {
+        data = await CouponsApi.coupons(documentId);
+      }
+
+      setCoupons(data?.data ?? {});
     },
     []
   )
-
-  console.log(coupons);
 
   const handleCategory = useCallback(
     (category: CategoryInterface) =>
     {
       setSelectedCategory(category.documentId)
-      getCoupons(category.documentId)
+      // URL query params update хийх
+      const newParams = new URLSearchParams(params.toString())
+      newParams.set("category", category.documentId)
+      router.push(`${pathname}?${newParams.toString()}`)
     },
-    []
+    [params, pathname, router]
   )
 
   return (
@@ -141,12 +154,18 @@ export default function CouponsPage({ categories }: { categories: CategoryInterf
               >
                 <DynamicIcon name={category.logo_name as IconName} className="w-4 h-4" />
                 {category.name}
-                <Badge
-                  variant="secondary"
-                  className={`ml-1 text-xs ${selectedCategory === category.documentId ? "bg-white/20 text-white" : "bg-muted"}`}
-                >
-                  {category.coupons.count}
-                </Badge>
+                {
+                  category.coupons.count == null
+                  ? null
+                  : (
+                    <Badge
+                      variant="secondary"
+                      className={`ml-1 text-xs ${selectedCategory === category.documentId ? "bg-white/20 text-white" : "bg-muted"}`}
+                    >
+                      {category.coupons.count}
+                    </Badge>
+                  )
+                }
               </button>
             ))}
           </div>
@@ -189,7 +208,7 @@ export default function CouponsPage({ categories }: { categories: CategoryInterf
           )}
 
           {/* Load More */}
-          {coupons.length > 0 && (
+          {coupons.data.length > 0 && (
             <div className="text-center mt-12">
               <Button
                 variant="outline"
