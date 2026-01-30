@@ -20,7 +20,7 @@ export async function getUserMeLoader() {
     if (data.error) return { success: false, data: null, error: data.error };
     return { success: true, data: data, error: null };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return { success: false, data: null, error: error };
   }
 }

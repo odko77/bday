@@ -9,4 +9,5 @@ export interface CategoryInterface {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
+    [key: string]: any;
 }

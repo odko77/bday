@@ -135,7 +135,7 @@ function errror(err: AxiosError<ApiResponse>): ApiResponse {
 
     // /** хүсэлт явахгүй алдаа гарсан бол backend асуудалтай болсон байнаа гэж үзээд алдааны toast харуулах */
     if (error?.success === undefined) {
-        console.log("error in front end", err);
+        // console.log("error in front end", err);
         error = {
             success: false,
             error: {
@@ -147,7 +147,7 @@ function errror(err: AxiosError<ApiResponse>): ApiResponse {
     }
 
     /** Алдааны messege ийг харуулах нь */
-    if (error?.error && typeof error.error === 'object' && 'message' in error.error) {
+    if (error?.error && typeof error?.error === 'object' && 'message' in error.error) {
         // toast.error(error?.error?.message)
         /** Хүсэлтийн хариуг харуулах нь */
         // const text = rspText(error.error, true)

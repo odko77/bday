@@ -10,7 +10,7 @@ import { CategoryApi, MeApi, SingleType } from "@/utils/api"
 export default async function Home() {
 
   const rsp = await CategoryApi.list()
-  const categories = rsp.data
+  const categories = rsp?.data?.data ?? []
 
   const homepagersp = await SingleType.homepage()
   const homePage = homepagersp?.data?.data ?? {
@@ -22,7 +22,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <HeroSection categories={categories.data} homePage={homePage} />
+      <HeroSection categories={categories} homePage={homePage} />
       <FeaturesSection />
       <BrandsSection />
       <TestimonialsSection />

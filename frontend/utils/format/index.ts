@@ -18,7 +18,7 @@ export function showMoney(min: any, max: any, currency = "₮") {
     }
 }
 
-export function formatDate(dateString: string | Date | null | undefined, hasTime=true): string {
+export function formatDate(dateString: string | Date | null | undefined, hasTime = true): string {
     // Return empty string for null, undefined, or empty values
     if (!dateString) {
         return '';
@@ -38,5 +38,18 @@ export function formatDate(dateString: string | Date | null | undefined, hasTime
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
-    return `${month}/${day}/${year}${hasTime ? `, ${hours}:${minutes}` : ""}`;
+    return `${year} оны ${month} сар ${day} өдөр ${hasTime ? `${hours}:${minutes}` : ""}`;
+}
+
+export function formatDateE(endDateStr: string) {
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    };
+    return new Date(endDateStr).toLocaleString("mn-MN", options);
+
 }
