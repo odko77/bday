@@ -47,3 +47,6 @@ export const MeApi = {
     login: (data: any) => instance.post(`/api/auth/local`, data)
 }
 
+export const FaqApi = {
+    list: () => instance.get(`/api/faqs`)
+}
