@@ -7,6 +7,8 @@ import { DynamicIcon, IconName } from "lucide-react/dynamic"
 import Link from "next/link"
 import { CategoryInterface } from "@/types/categories"
 import { HomePageInterface } from "@/types/singleType"
+import { CouponInteface } from "@/types/coupons"
+import { FeatureInteface } from "@/types/featured"
 
 const featuredCoupons = [
   {
@@ -46,7 +48,7 @@ const featuredCoupons = [
   },
 ]
 
-export function HeroSection({ categories, homePage }: { categories: CategoryInterface[], homePage: HomePageInterface }) {
+export function HeroSection({ categories, homePage, featured }: { categories: CategoryInterface[], homePage: HomePageInterface, featured: FeatureInteface }) {
   return (
     <section className="relative min-h-screen overflow-hidden bg-sparkli-cream">
       {/* Decorative Background Elements */}
@@ -125,9 +127,9 @@ export function HeroSection({ categories, homePage }: { categories: CategoryInte
 
         {/* Coupon Cards Preview */}
         <div className="mt-16 grid gap-6 md:grid-cols-3">
-          {featuredCoupons.map((coupon) => (
-            <CouponCard key={coupon.id} {...coupon} />
-          ))}
+          <CouponCard key={featured.coupon1.documentId} {...featured.coupon1} />
+          <CouponCard key={featured.coupon2.documentId} {...featured.coupon2} />
+          <CouponCard key={featured.coupon3.documentId} {...featured.coupon3} />
         </div>
       </div>
     </section>

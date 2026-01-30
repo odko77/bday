@@ -5,7 +5,7 @@ import { BrandsSection } from "@/components/brands-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
-import { CategoryApi, MeApi, SingleType } from "@/utils/api"
+import { CategoryApi, CouponsApi, MeApi, SingleType } from "@/utils/api"
 
 export default async function Home() {
 
@@ -19,10 +19,13 @@ export default async function Home() {
     description: "Хмагийн олон хямдралыг нэг дроос"
   }
 
+  const rspFeatured = await SingleType.featured()
+  const featured = rspFeatured?.data?.data ?? {}
+
   return (
     <main className="min-h-screen">
       <Navbar />
-      <HeroSection categories={categories} homePage={homePage} />
+      <HeroSection categories={categories} homePage={homePage} featured={featured} />
       <FeaturesSection />
       <BrandsSection />
       <TestimonialsSection />

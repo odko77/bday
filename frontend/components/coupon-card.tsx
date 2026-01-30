@@ -84,12 +84,15 @@ export function CouponCard({
   locale,
   company,
 }: CouponCardProps) {
-  const colors = createColorMapEntry(company.color)
+  const colors = createColorMapEntry(company?.color ?? "#FFFFFF")
 
   const logo = useMemo(() => {
     // return company.logo_url.formats.thumbnail.url
+    if (!company?.logo_url?.url) {
+      return null
+    }
     return process.env.NEXT_PUBLIC_BACK_URL + company.logo_url.url
-  }, [company.logo_url])
+  }, [company?.logo_url])
 
   return (
     <div className="group relative">
@@ -126,13 +129,13 @@ export function CouponCard({
                 }}
               >
                 {logo ? (
-                  <img src={logo || "/placeholder.svg"} alt={company.name} className="w-10 h-10 object-contain" />
+                  <img src={logo || "/placeholder.svg"} alt={company?.name} className="w-10 h-10 object-contain" />
                 ) : (
-                  company.name.charAt(0)
+                  company?.name?.charAt(0)
                 )}
               </div>
               <div>
-                <h3 className="font-bold text-foreground text-base leading-tight">{company.name}</h3>
+                <h3 className="font-bold text-foreground text-base leading-tight">{company?.name}</h3>
                 {/* <span className="text-xs text-muted-foreground">{category}</span> */}
               </div>
             </div>

@@ -33,6 +33,7 @@ export const CouponsApi = {
 
 export const SingleType = {
     homepage: () => instance.get(`/api/home-page/`),
+    featured: () => instance.get(`/api/featured/?populate[coupon1][populate][company][populate]=logo_url&populate[coupon2][populate][company][populate]=logo_url&populate[coupon3][populate][company][populate]=logo_url`),
 }
 
 export const MeApi = {
